@@ -5,8 +5,9 @@ from requests import post , get
 import json
 
 load_dotenv()
-client_id = os.getenv("CLIENT_ID")
-client_secret= os.getenv("CLIENT_SECRET")
+
+client_id = os.getenv('CLIENT_ID')
+client_secret =os.getenv('CLIENT_SECRET')
 
 def get_token():
    auth_string = client_id + ":" + client_secret
@@ -50,6 +51,19 @@ def get_song(token, artist_id):
    json_result=json.loads(result.content)["tracks"]
    return json_result
 
+def get_stats(artist_id, token):
+   url = f"https://api.spotify.com/v1/artists/{artist_id}"
+   headers=get_auth_header(token)
+   result=get(url, headers=headers)
+   artist_data=result.json()
+   stats = {
+   "nombre": artist_data['name'],
+   "popularidad": artist_data['popularity'],
+   "seguidores": artist_data['followers']['total'],
+   "generos": artist_data['genres']
+   }
+   return stats 
+
 token = get_token()
 result = search_artist(token, "Dannylux")
 artist_id = result["id"]
@@ -58,24 +72,28 @@ songs = get_song(token, artist_id)
 for idx, song in enumerate(songs):
    print(f"{idx + 1 }. {song ['name']}")
     
-class Usuario:
- def inicio(perfil,usuario,contraseña):
-    perfil.usuario= usuario
-    perfil.contraseña=contraseña
-    perfil.artfav= []
-    perfil.canfav= []
-    perfil.generosfav= []
-
-def agregar_art_fav(perfil, artista):
-    perfil.artista_fav.append(artista)
-
-def agregar_cancion_fav(perfil, cancion):
-    perfil.cancion_fav.append(cancion)
-
-def agregar_cancion_fav(perfil, genero):
-    perfil.genero_fav.append(genero)
-
 def registro():
-    username=input("Ingrese su nombre de usuario: ")
-    contraseña=input("Ingrese una contraseña segura: ")
-    return Usuario(username,contraseña)
+    username=str(input("Ingrese su nombre de usuario: "))
+    contraseña=str(input("Ingrese una contraseña segura: "))
+    
+registro()
+
+def mostrar_stats():
+ 
+ while True: 
+   artist=input("Ingresa el artista del que deseas obtener las estadisticas, si deseas salir solo escribe salir :")
+
+   if artist.lower() == "salir":
+      print("Saliendo del programa :C")
+      break
+
+   artist=search_artist(token,artist)
+
+   if artist:
+      artist_stats= get_stats(artist[id],token)
+      print(f"\n Estadisticas del artista {artist_stats['nombre']}:")
+      print(f"-Popularidad: {artist_stats['popularidad']}")
+      print(f"-Seguidores: {artist_stats['seguidores']}")
+      print(f"-Generos: {artist_stats['generos']}\n")
+
+mostrar_stats()

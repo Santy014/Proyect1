@@ -1,0 +1,5 @@
+Le solicito reevaluar avances 1, 2 , 4 , 5 , 6 y 7  (que no se sido evaluado al dia de hoy) 
+Avance 1: Ya se encuentra corregido (README.md)
+Avance 2: El Programa cuenta con operaciones aritmeticas 
+Avance 4 y 5: El Programa cuenta con un archivo env que es necesario para compilarlo, el archivo env ya fue enviado al profesor
+Avance 6: El programa cuenta con listas 
